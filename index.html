@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Avaliação de Perguntas</title>
+    <style>
+        h1 {
+          text-align: center;
+        }
+    
+        table {
+          margin: 20px auto;
+          border-collapse: collapse;
+          width: 600px;
+        }
+    
+        th, td {
+          padding: 10px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+    
+        th {
+          background-color: #f2f2f2;
+          font-weight: bold;
+        }
+    
+        button {
+          display: block;
+          margin: 20px auto;
+          padding: 10px 20px;
+          font-size: 16px;
+        }
+      </style>
+
+</head>
+
+<body>
+    <h1>Avaliação de Perguntas</h1>
+
+    <table id="tabela">
+        <tr>
+            <th>Pergunta</th>
+            <th>Sim</th>
+            <th>Não</th>
+        </tr>
+    </table>
+
+    <button onclick="avaliarRespostas()">AVALIAR</button>
+
+    <script>
+        var perguntas = [
+            { descricao: "Dificuldades persistentes na comunicação social e interações sociais em múltiplos contextos.", tipo: "x" },
+            { descricao: "Você tem dificuldade em iniciar ou participar de conversas em grupo? Por exemplo, você tende a ficar em silêncio ou se sente desconfortável ao tentar participar ativamente de uma conversa em um contexto social?", tipo: "#" },
+            { descricao: "Você tem dificuldade em compreender as pistas sociais sutis, como expressões faciais, tom de voz ou linguagem corporal? Por exemplo, você tem dificuldade em identificar quando alguém está chateado ou sarcástico apenas observando suas expressões ou tom de voz?", tipo: "#" },
+            { descricao: "Você encontra desafios na interpretação e resposta a piadas, ironias ou sarcasmo? Por exemplo, você pode ter dificuldade em entender quando alguém está sendo irônico ou fazendo uma piada, levando as declarações literalmente em vez de perceber o significado subjacente.", tipo: "#" },
+            { descricao: "Você tem dificuldade em adaptar seu comportamento às diferentes situações sociais? Por exemplo, você pode se sentir perdido ou desconfortável em saber como se comportar em eventos formais, festas informais ou situações sociais diferentes das quais está acostumado.", tipo: "#" },
+            { descricao: "Você tem dificuldade em ler as emoções dos outros e responder adequadamente a elas? Por exemplo, você pode ter dificuldade em identificar quando alguém está feliz, triste ou com raiva, e isso pode afetar sua capacidade de responder com empatia e conexão emocional.", tipo: "#" },
+            { descricao: "Déficits na comunicação não verbal, como contato visual, expressões faciais e linguagem corporal.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você tem dificuldade em manter contato visual durante uma conversa? Por exemplo, você evita olhar diretamente nos olhos das pessoas ou acha desconfortável manter o contato visual por muito tempo?", tipo: "#" },
+            { descricao: "Você tem dificuldade em interpretar as expressões faciais das pessoas? Por exemplo, você pode ter dificuldade em identificar quando alguém está feliz, triste, irritado ou confuso apenas observando suas expressões faciais.", tipo: "#" },
+            { descricao: "Você tem dificuldade em usar expressões faciais adequadas para transmitir emoções? Por exemplo, você pode achar desafiador expressar naturalmente sorrisos, franzir a testa ou mostrar outras expressões emocionais durante interações sociais.", tipo: "#" },
+            { descricao: "Você tem dificuldade em compreender e usar a linguagem corporal de maneira adequada? Por exemplo, você pode ter dificuldade em interpretar gestos, posturas corporais ou sinais não verbais que as pessoas usam para comunicar informações ou intenções.", tipo: "#" },
+            { descricao: "Você tem dificuldade em regular sua própria linguagem corporal durante as interações sociais? Por exemplo, você pode exibir movimentos repetitivos ou estereotipados, como balançar o corpo ou agitar as mãos, que podem interferir na comunicação não verbal com os outros.", tipo: "#" },
+            { descricao: "Dificuldades no desenvolvimento, manutenção e compreensão de relacionamentos.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você tem dificuldade em iniciar amizades ou relacionamentos interpessoais? Por exemplo, você acha desafiador abordar alguém novo e iniciar uma conversa ou estabelecer uma conexão com os outros?", tipo: "#" },
+            { descricao: "Você tem dificuldade em compreender as normas sociais e as sutilezas dos relacionamentos? Por exemplo, você pode encontrar dificuldades em entender quando é apropriado iniciar uma conversa, como manter o equilíbrio entre falar e ouvir, ou como interpretar as intenções e emoções dos outros durante interações sociais.", tipo: "#" },
+            { descricao: "Você encontra dificuldades em desenvolver e manter relacionamentos íntimos? Por exemplo, você pode ter dificuldade em estabelecer vínculos emocionais profundos com outras pessoas, manter amizades duradouras ou entender as necessidades e expectativas dos outros em relacionamentos próximos.", tipo: "#" },
+            { descricao: "Você tem dificuldade em compreender e responder às emoções dos outros de maneira apropriada? Por exemplo, você pode ter dificuldade em reconhecer quando alguém está triste, com raiva, feliz ou frustrado, e pode ter dificuldade em expressar empatia e oferecer apoio emocional.", tipo: "#" },
+            { descricao: "Você enfrenta desafios na interpretação de sinais não verbais e pistas sociais em relacionamentos? Por exemplo, você pode ter dificuldade em ler as expressões faciais, a linguagem corporal ou outros sinais não verbais que são essenciais para compreender os sentimentos e intenções dos outros em um relacionamento.", tipo: "#" },
+            { descricao: "Dificuldade em compartilhar interesses, emoções e afetos com outras pessoas.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você tem dificuldade em compartilhar seus interesses e hobbies com os outros? Por exemplo, você acha desafiador expressar entusiasmo ou falar sobre seus interesses com outras pessoas, mesmo quando elas estão interessadas no assunto?", tipo: "#" },
+            { descricao: "Você tem dificuldade em expressar e compartilhar suas emoções com os outros? Por exemplo, você pode achar difícil expressar quando está triste, feliz, irritado ou preocupado, e pode ter dificuldade em comunicar suas necessidades emocionais aos outros.", tipo: "#" },
+            { descricao: "Você tem dificuldade em reconhecer e responder aos interesses e emoções das outras pessoas? Por exemplo, você pode encontrar desafios em identificar quando alguém está animado, triste ou entediado, e pode ter dificuldade em mostrar interesse genuíno em relação às experiências e sentimentos dos outros.", tipo: "#" },
+            { descricao: "Você tem dificuldade em compartilhar afeto, como abraços, beijos ou gestos carinhosos, com outras pessoas? Por exemplo, você pode sentir desconforto ou falta de familiaridade com demonstrações físicas de afeto e pode preferir manter certa distância física dos outros.", tipo: "#" },
+            { descricao: "Você tem dificuldade em participar de atividades sociais ou eventos nos quais as pessoas compartilham interesses comuns? Por exemplo, você pode achar desafiador se envolver em conversas informais ou em atividades de grupo em que as pessoas compartilham entusiasmo por algo específico.", tipo: "#" },
+            { descricao: "Falta de reciprocidade socioemocional ou respostas emocionais anormais em interações sociais.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você tem dificuldade em reagir emocionalmente de forma apropriada em situações sociais? Por exemplo, você pode parecer indiferente ou ter reações emocionais atípicas em momentos em que a maioria das pessoas demonstraria emoções específicas, como alegria, tristeza ou raiva.", tipo: "#" },
+            { descricao: "Você tem dificuldade em compreender e responder de maneira adequada aos sentimentos e emoções das outras pessoas? Por exemplo, você pode ter dificuldade em identificar quando alguém está chateado, feliz, com medo ou frustrado, e pode ter respostas emocionais descontextualizadas ou inadequadas em relação a essas emoções.", tipo: "#" },
+            { descricao: "Você tem dificuldade em demonstrar empatia ou compreensão das emoções dos outros? Por exemplo, você pode ter dificuldade em oferecer consolo ou suporte emocional quando alguém está passando por um momento difícil, ou pode não reconhecer quando alguém está precisando de apoio emocional.", tipo: "#" },
+            { descricao: "Você tem dificuldade em compartilhar suas próprias emoções de forma recíproca durante as interações sociais? Por exemplo, você pode ter dificuldade em expressar e compartilhar seus sentimentos pessoais em resposta às emoções e experiências compartilhadas por outras pessoas.", tipo: "#" },
+            { descricao: "Você tem reações emocionais excessivas ou inapropriadas em situações sociais? Por exemplo, você pode ter respostas emocionais desproporcionais a eventos ou interações que a maioria das pessoas consideraria menos emocionalmente impactantes.", tipo: "#" },
+            { descricao: "Padrões restritos e repetitivos de comportamento, interesses ou atividades.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você tem padrões de comportamento repetitivos e restritos, como seguir rotinas fixas ou ter rituais específicos que precisam ser seguidos rigidamente? Por exemplo, você sente a necessidade de fazer as coisas sempre na mesma ordem ou ficar desconfortável quando há mudanças na rotina diária.", tipo: "#" },
+            { descricao: "Você tem interesses restritos e intensos em assuntos específicos, como colecionar objetos incomuns ou ter conhecimento detalhado sobre tópicos específicos? Por exemplo, você se dedica profundamente a um hobby ou tema específico e pode passar horas pesquisando ou se envolvendo nessa área de interesse.", tipo: "#" },
+            { descricao: "Você exibe comportamentos motores estereotipados, como balançar o corpo, bater as mãos ou fazer movimentos repetitivos com os dedos? Por exemplo, você pode ter gestos ou movimentos característicos que ocorrem com frequência e parecem ser involuntários ou compulsivos.", tipo: "#" },
+            { descricao: "Você apresenta sensibilidade incomum a certos estímulos sensoriais, como sons altos, texturas específicas ou luzes brilhantes? Por exemplo, você pode reagir de forma intensa ou evitar situações que envolvam esses estímulos sensoriais específicos.", tipo: "#" },
+            { descricao: "Você tem dificuldade em lidar com mudanças, sejam elas pequenas ou grandes? Por exemplo, você pode sentir ansiedade, desconforto ou resistência diante de alterações na rotina, planos ou ambiente físico.", tipo: "#" },
+            { descricao: "Movimentos repetitivos ou estereotipados.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você realiza movimentos corporais repetitivos, como balançar o corpo, balançar as mãos, agitar os dedos ou fazer movimentos com os pés de forma frequente e involuntária? Por exemplo, você pode fazer esses movimentos enquanto está sentado, em pé ou em situações específicas.", tipo: "#" },
+            { descricao: "Você apresenta comportamentos estereotipados com objetos, como girar, alinhar ou alisar objetos repetidamente? Por exemplo, você pode se sentir compelido a alinhar seus objetos em uma ordem específica ou tocar em certos objetos de forma repetitiva.", tipo: "#" },
+            { descricao: "Você exibe comportamentos motores repetitivos, como bater palmas, pular ou dar pulinhos? Por exemplo, você pode realizar esses comportamentos em momentos específicos, como quando está ansioso, entusiasmado ou para se autorregular.", tipo: "#" },
+            { descricao: "Você tem padrões repetitivos de fala ou linguagem, como repetir palavras ou frases específicas, mesmo fora de contexto? Por exemplo, você pode repetir as mesmas perguntas ou frases em várias situações ou fixar-se em tópicos específicos durante a conversa.", tipo: "#" },
+            { descricao: "Você tem comportamentos repetitivos relacionados a interesses ou atividades específicas? Por exemplo, você pode seguir rituais ou rotinas estritas em relação a um hobby, jogo ou atividade que realiza regularmente.", tipo: "#" },
+            { descricao: "Insistência em manter rotinas fixas ou rituais excessivamente específicos.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você sente uma necessidade intensa de seguir rotinas fixas e fica desconfortável quando há mudanças nesses padrões? Por exemplo, você pode sentir ansiedade ou frustração se alguma atividade diária for interrompida ou se a ordem das coisas for alterada.", tipo: "#" },
+            { descricao: "Você realiza rituais específicos antes de realizar certas tarefas ou eventos, como arrumar objetos em uma ordem precisa ou repetir certas ações várias vezes? Por exemplo, você pode precisar tocar em objetos de uma determinada maneira ou realizar uma sequência de movimentos antes de começar uma atividade.", tipo: "#" },
+            { descricao: "Você se sente extremamente incomodado ou perturbado quando suas rotinas ou rituais são interrompidos ou não podem ser concluídos? Por exemplo, você pode experimentar uma angústia significativa se não puder realizar um comportamento ritualizado ou seguir sua rotina diária normalmente.", tipo: "#" },
+            { descricao: "Você fica ansioso ou irritado diante de situações imprevistas ou mudanças repentinas em planos ou rotinas estabelecidas? Por exemplo, você pode ter dificuldade em lidar com eventos inesperados e pode se esforçar para restaurar imediatamente a ordem ou a previsibilidade.", tipo: "#" },
+            { descricao: "Você sente uma necessidade de simetria ou ordem específica em seu ambiente ou em suas ações? Por exemplo, você pode alinhar objetos simetricamente ou seguir uma ordem específica para realizar tarefas diárias, mesmo que não seja necessário para a finalização dessas tarefas.", tipo: "#" },
+            { descricao: "Interesses restritos e intensos por assuntos específicos.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você possui um interesse incomum ou obsessivo por um tópico específico, como trens, dinossauros, matemática, astronomia, entre outros? Por exemplo, você pode passar horas pesquisando, coletando informações ou envolvendo-se em atividades relacionadas a esse assunto.", tipo: "#" },
+            { descricao: "Você tem dificuldade em se envolver ou demonstrar interesse por assuntos que não estejam dentro da sua área de interesse restrito? Por exemplo, você pode ter dificuldade em participar de conversas sobre outros tópicos e pode preferir direcionar a discussão para o seu interesse específico.", tipo: "#" },
+            { descricao: "Você possui um conhecimento detalhado e específico sobre o seu interesse restrito, muitas vezes superando o conhecimento de outras pessoas em relação a esse assunto? Por exemplo, você pode se lembrar de fatos, datas ou detalhes específicos relacionados ao seu interesse, mesmo que não tenha o mesmo nível de conhecimento em outros assuntos.", tipo: "#" },
+            { descricao: "Você tende a dedicar a maior parte do seu tempo e energia ao seu interesse restrito, em detrimento de outras atividades ou responsabilidades? Por exemplo, você pode se sentir mais motivado e engajado em relação ao seu interesse específico, enquanto outras áreas da sua vida podem ser negligenciadas.", tipo: "#" },
+            { descricao: "Você sente dificuldade em se adaptar a novos interesses ou em explorar outras áreas de conhecimento? Por exemplo, você pode resistir a tentar novas atividades ou explorar novos tópicos, preferindo se concentrar exclusivamente no seu interesse restrito.", tipo: "#" },
+            { descricao: "Sensibilidades sensoriais, como hipersensibilidade ou hiposensibilidade a estímulos sensoriais.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você é muito sensível a certos tipos de estímulos sensoriais, como ruídos altos, luzes intensas, texturas ásperas ou odores fortes? Por exemplo, você pode se sentir extremamente incomodado, sobrecarregado ou até mesmo experimentar dor física em resposta a esses estímulos.", tipo: "#" },
+            { descricao: "Você evita ou busca ativamente determinados estímulos sensoriais devido à sua sensibilidade? Por exemplo, você pode evitar lugares barulhentos, usar protetores auriculares em ambientes barulhentos ou preferir roupas com texturas suaves.", tipo: "#" },
+            { descricao: "Você tem uma tolerância incomum a estímulos sensoriais, como alta temperatura ambiente, pressão tátil ou dor física? Por exemplo, você pode não perceber imediatamente que está se queimando, ter dificuldade em sentir o desconforto físico ou ter um limiar de dor mais alto do que a maioria das pessoas.", tipo: "#" },
+            { descricao: "Você possui uma necessidade de controle sobre o ambiente sensorial ao seu redor, buscando ajustar a iluminação, a temperatura, o volume do som ou outros estímulos para atender às suas preferências sensoriais? Por exemplo, você pode sentir a necessidade de ter controle sobre a intensidade das luzes ou a temperatura do ambiente em que se encontra.", tipo: "#" },
+            { descricao: "Você experimenta mudanças de humor, irritabilidade, ansiedade ou até mesmo reações físicas, como dores de cabeça, quando exposto a estímulos sensoriais desagradáveis ou intensos? Por exemplo, você pode ficar ansioso ou agitado em ambientes barulhentos, sentir-se irritado com determinados cheiros ou sentir desconforto físico em resposta a certas texturas.", tipo: "#" },
+            { descricao: "Prejuízo no funcionamento diário causado pelos sintomas, que estão presentes desde os primeiros estágios do desenvolvimento.", tipo: "x" },
+            { descricao: "==========", tipo: "x" },
+            { descricao: "Você enfrenta dificuldades significativas na realização de tarefas diárias que a maioria das pessoas considera rotineiras ou simples, como se vestir, tomar banho, preparar refeições ou organizar-se para sair de casa? Por exemplo, você pode ter dificuldades na coordenação motora fina necessária para amarrar os cadarços, dificuldade em seguir uma rotina de higiene pessoal ou dificuldade em planejar e organizar tarefas.", tipo: "#" },
+            { descricao: "Você encontra desafios em se adaptar a mudanças na rotina ou a eventos inesperados? Por exemplo, você pode se sentir ansioso, confuso ou até mesmo agir de forma desafiadora quando ocorrem alterações não planejadas na sua rotina diária.", tipo: "#" },
+            { descricao: "Você apresenta dificuldades em se comunicar efetivamente para expressar suas necessidades, desejos ou emoções? Por exemplo, você pode ter dificuldade em pedir ajuda, em expressar quando está com fome ou cansado, ou em compartilhar suas emoções com os outros.", tipo: "#" },
+            { descricao: "Você tem dificuldades em lidar com situações sociais, como interações com colegas de trabalho, encontros sociais ou participação em grupos? Por exemplo, você pode sentir-se desconfortável em situações sociais, ter dificuldade em interpretar as regras não escritas do comportamento social ou experimentar ansiedade em interações sociais.", tipo: "#" },
+            { descricao: "Você enfrenta desafios em lidar com estímulos sensoriais no ambiente, como sons, luzes, texturas ou cheiros? Por exemplo, você pode ficar sobrecarregado ou distraído por estímulos sensoriais no ambiente, o que dificulta seu foco ou desencadeia reações emocionais ou comportamentais.", tipo: "#" },
+        ];
+
+        var tabela = document.getElementById("tabela");
+
+        for (var i = 0; i < perguntas.length; i++) {
+            var row = tabela.insertRow(i + 1);
+            var perguntaCell = row.insertCell(0);
+            var simCell = row.insertCell(1);
+            var naoCell = row.insertCell(2);
+
+            var perg = perguntas[i];            
+
+            if (perg.tipo == "#") {                
+                perguntaCell.innerHTML = perg.descricao;                
+                simCell.innerHTML = '<input type="radio" name="resposta' + i + '" value="sim">';
+                naoCell.innerHTML = '<input type="radio" name="resposta' + i + '" value="nao">';
+            } else {
+                perguntaCell.innerHTML = `<b>${perg.descricao}</b>`;
+                simCell.innerHTML = '';
+                naoCell.innerHTML = '';
+            }
+        }
+
+        function avaliarRespostas() {
+            var rowCount = tabela.rows.length;
+            var totalSim = 0;
+            var totalNao = 0;
+
+            for (var i = 1; i < rowCount; i++) {
+                var simRadio = tabela.rows[i].cells[1].getElementsByTagName("input")[0];
+                var naoRadio = tabela.rows[i].cells[2].getElementsByTagName("input")[0];
+
+                if (simRadio.checked) {
+                    totalSim++;
+                } else if (naoRadio.checked) {
+                    totalNao++;
+                }
+            }
+
+            var totalRespostas = totalSim + totalNao;
+            var porcentagemSim = (totalSim / totalRespostas) * 100;
+            var porcentagemNao = (totalNao / totalRespostas) * 100;
+
+            alert("Porcentagem de Respostas SIM: " + porcentagemSim.toFixed(2) + "%\nPorcentagem de Respostas NÃO: " + porcentagemNao.toFixed(2) + "%");
+        }
+    </script>
+</body>
+
+</html>
